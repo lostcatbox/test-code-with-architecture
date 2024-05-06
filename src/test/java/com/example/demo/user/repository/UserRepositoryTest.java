@@ -1,4 +1,4 @@
-package com.example.demo.repository;
+package com.example.demo.user.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
