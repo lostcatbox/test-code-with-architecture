@@ -4,12 +4,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
-import com.example.demo.exception.CertificationCodeNotMatchedException;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.UserStatus;
-import com.example.demo.model.dto.UserCreateDto;
-import com.example.demo.model.dto.UserUpdateDto;
-import com.example.demo.repository.UserEntity;
+import com.example.demo.common.domain.CertificationCodeNotMatchedException;
+import com.example.demo.common.domain.ResourceNotFoundException;
+import com.example.demo.user.domain.UserStatus;
+import com.example.demo.user.domain.dto.UserCreate;
+import com.example.demo.user.domain.dto.UserUpdate;
+import com.example.demo.user.infrastructure.UserEntity;
+import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +83,7 @@ public class UserServiceTest {
     @Test
     void userCreateDto_를_이용하여_유저를_생성할_수_있다() {
         // given
-        UserCreateDto userCreateDto = UserCreateDto.builder()
+        UserCreate userCreate = UserCreate.builder()
             .email("kok202@kakao.com")
             .address("Gyeongi")
             .nickname("kok202-k")
@@ -90,7 +91,7 @@ public class UserServiceTest {
         BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         // when
-        UserEntity result = userService.create(userCreateDto);
+        UserEntity result = userService.create(userCreate);
 
         // then
         assertThat(result.getId()).isNotNull();
@@ -101,13 +102,13 @@ public class UserServiceTest {
     @Test
     void userUpdateDto_를_이용하여_유저를_수정할_수_있다() {
         // given
-        UserUpdateDto userUpdateDto = UserUpdateDto.builder()
+        UserUpdate userUpdate = UserUpdate.builder()
             .address("Incheon")
             .nickname("kok202-n")
             .build();
 
         // when
-        userService.update(1, userUpdateDto);
+        userService.update(1, userUpdate);
 
         // then
         UserEntity userEntity = userService.getById(1);
