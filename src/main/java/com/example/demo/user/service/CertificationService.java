@@ -18,7 +18,7 @@ public class CertificationService {
         String text = "Please click the following link to certify your email address: " + certificationUrl;
         mailSender.send(email, title, text);
     }
-    public String generateCertificationUrl(long userId, String certificationCode) {
+    private String generateCertificationUrl(long userId, String certificationCode) {
         return "http://localhost:8080/api/users/" + userId + "/verify?certificationCode=" + certificationCode;
     }
 }
