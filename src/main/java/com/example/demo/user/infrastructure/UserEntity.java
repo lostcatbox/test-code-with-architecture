@@ -1,5 +1,6 @@
 package com.example.demo.user.infrastructure;
 
+import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,4 +41,29 @@ public class UserEntity {
 
     @Column(name = "last_login_at")
     private Long lastLoginAt;
+
+    public static UserEntity fromModel(User user) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.id = user.getId();
+        userEntity.address = user.getAddress();
+        userEntity.certificationCode = user.getCertificationCode();
+        userEntity.email = user.getEmail();
+        userEntity.lastLoginAt = user.getLastLoginAt();
+        userEntity.nickname = user.getNickname();
+        userEntity.status = user.getStatus();
+        return userEntity;
+    }
+
+
+    public User toModel() {
+        return User.builder()
+                .id(id)
+                .email(email)
+                .address(address)
+                .certificationCode(certificationCode)
+                .lastLoginAt(lastLoginAt)
+                .status(status)
+                .nickname(nickname)
+                .build();
+    }
 }

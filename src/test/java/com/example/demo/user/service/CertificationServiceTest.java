@@ -3,22 +3,12 @@ package com.example.demo.user.service;
 import com.example.demo.mock.FakeMailSender;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CertificationServiceTest {
     @Test
     void send_이메일_전송_성공() {
-        //given
-
         FakeMailSender fakeMailSender = new FakeMailSender();
         CertificationService certificationService = new CertificationService(fakeMailSender);
-
 
         certificationService.send("kok202@naver.com", 1, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
