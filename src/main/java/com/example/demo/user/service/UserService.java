@@ -1,12 +1,13 @@
 package com.example.demo.user.service;
 
-import com.example.demo.common.domain.CertificationCodeNotMatchedException;
 import com.example.demo.common.domain.ResourceNotFoundException;
+import com.example.demo.common.service.port.ClockHolder;
+import com.example.demo.common.service.port.UuidHolder;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserCreate;
 import com.example.demo.user.domain.UserUpdate;
-import com.example.demo.user.infrastructure.UserEntity;
+
 import java.time.Clock;
 
 import com.example.demo.user.service.port.UserRepository;
@@ -20,6 +21,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
+    private final ClockHolder clockHolder;
+    private final UuidHolder uuidHolder;
 
     public User getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
@@ -33,7 +36,7 @@ public class UserService {
 
     @Transactional
     public User create(UserCreate userCreate) {
-        User user = User.from(userCreate);
+        User user = User.from(userCreate, uuidHolder);
         userRepository.save(user);
         certificationService.send(userCreate.getEmail(), user.getId(), user.getCertificationCode());
         return user;
@@ -42,7 +45,7 @@ public class UserService {
     @Transactional
     public User update(long id, UserUpdate userUpdate) {
         User user = getById(id);
-        user.update(userUpdate);
+        user.update(userUpdate, clockHolder);
         userRepository.save(user);
         return user;
     }
@@ -50,7 +53,7 @@ public class UserService {
     @Transactional
     public void login(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
-        User loginedUser = user.login();
+        User loginedUser = user.login(clockHolder);
         userRepository.save(loginedUser);
     }
 

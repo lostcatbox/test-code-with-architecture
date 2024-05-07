@@ -1,5 +1,7 @@
 package com.example.demo.user.service.domain;
 
+import com.example.demo.mock.TestClockHolder;
+import com.example.demo.mock.TestUuidHolder;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserCreate;
 import com.example.demo.user.domain.UserStatus;
@@ -17,13 +19,13 @@ public class UserTest {
                 .nickname("kok202")
                 .address("Seoul")
                 .build();
-        User user = User.from(userCreate);
+        User user = User.from(userCreate, new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
 
         Assertions.assertThat(user.getEmail()).isEqualTo(userCreate.getEmail());
         Assertions.assertThat(user.getAddress()).isEqualTo(userCreate.getAddress());
         Assertions.assertThat(user.getNickname()).isEqualTo(userCreate.getNickname());
         Assertions.assertThat(user.getStatus()).isEqualTo(UserStatus.PENDING);
-//        Assertions.assertThat(user.getLastLoginAt()).isEqualTo(UserStatus.PENDING);
+        Assertions.assertThat(user.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
     }
 }
