@@ -11,12 +11,14 @@ import com.example.demo.user.domain.UserUpdate;
 import java.time.Clock;
 
 import com.example.demo.user.service.port.UserRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Builder
 public class UserService {
 
     private final UserRepository userRepository;
@@ -37,17 +39,17 @@ public class UserService {
     @Transactional
     public User create(UserCreate userCreate) {
         User user = User.from(userCreate, uuidHolder);
-        userRepository.save(user);
-        certificationService.send(userCreate.getEmail(), user.getId(), user.getCertificationCode());
-        return user;
+        User savedUser = userRepository.save(user);
+        certificationService.send(userCreate.getEmail(), savedUser.getId(), savedUser.getCertificationCode());
+        return savedUser;
     }
 
     @Transactional
     public User update(long id, UserUpdate userUpdate) {
         User user = getById(id);
-        user.update(userUpdate, clockHolder);
-        userRepository.save(user);
-        return user;
+        User updatedUser = user.update(userUpdate, clockHolder);
+        User savedUser = userRepository.save(updatedUser);
+        return savedUser;
     }
 
     @Transactional

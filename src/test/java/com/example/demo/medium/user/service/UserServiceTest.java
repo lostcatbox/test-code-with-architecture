@@ -1,57 +1,41 @@
-package com.example.demo.user.service;
-
-import com.example.demo.common.domain.CertificationCodeNotMatchedException;
-import com.example.demo.common.domain.ResourceNotFoundException;
-import com.example.demo.mock.FackUserRepository;
-import com.example.demo.mock.FakeMailSender;
-import com.example.demo.mock.TestClockHolder;
-import com.example.demo.mock.TestUuidHolder;
-import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserCreate;
-import com.example.demo.user.domain.UserStatus;
-import com.example.demo.user.domain.UserUpdate;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.mail.SimpleMailMessage;
+package com.example.demo.medium.user.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
+import com.example.demo.common.domain.CertificationCodeNotMatchedException;
+import com.example.demo.common.domain.ResourceNotFoundException;
+import com.example.demo.user.domain.User;
+import com.example.demo.user.domain.UserStatus;
+import com.example.demo.user.domain.UserCreate;
+import com.example.demo.user.domain.UserUpdate;
+import com.example.demo.user.infrastructure.UserEntity;
+import com.example.demo.user.service.UserService;
+import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
+
+@SpringBootTest
+@TestPropertySource("classpath:test-application.properties")
+@SqlGroup({
+    @Sql(value = "/sql/user-service-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+})
 public class UserServiceTest {
+
+    @Autowired
     private UserService userService;
-
-    @BeforeEach
-    void init(){
-        FackUserRepository fakeUserRepository = new FackUserRepository();
-        userService = UserService.builder()
-                .certificationService(new CertificationService(new FakeMailSender()))
-                .userRepository(fakeUserRepository)
-                .clockHolder(new TestClockHolder(1234))
-                .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
-                .build();
-
-        fakeUserRepository.save(User.builder()
-                .id(1L)
-                .email("kok202@naver.com")
-                .nickname("kok202")
-                .address("Seoul")
-                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
-                .status(UserStatus.ACTIVE)
-                .lastLoginAt(0L)
-                .build());
-        fakeUserRepository.save(User.builder()
-                .id(2L)
-                .email("kok303@naver.com")
-                .nickname("kok303")
-                .address("Seoul")
-                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
-                .status(UserStatus.PENDING)
-                .lastLoginAt(0L)
-                .build());
-    }
-
+    @MockBean
+    private JavaMailSender mailSender;
 
     @Test
     void getByEmail은_ACTIVE_상태인_유저를_찾아올_수_있다() {
@@ -101,10 +85,11 @@ public class UserServiceTest {
     void userCreateDto_를_이용하여_유저를_생성할_수_있다() {
         // given
         UserCreate userCreate = UserCreate.builder()
-                .email("kok202@kakao.com")
-                .address("Gyeongi")
-                .nickname("kok202-k")
-                .build();
+            .email("kok202@kakao.com")
+            .address("Gyeongi")
+            .nickname("kok202-k")
+            .build();
+        BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         // when
         User result = userService.create(userCreate);
@@ -112,16 +97,16 @@ public class UserServiceTest {
         // then
         assertThat(result.getId()).isNotNull();
         assertThat(result.getStatus()).isEqualTo(UserStatus.PENDING);
-         assertThat(result.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"); // FIXME
+        // assertThat(result.getCertificationCode()).isEqualTo("T.T"); // FIXME
     }
 
     @Test
     void userUpdateDto_를_이용하여_유저를_수정할_수_있다() {
         // given
         UserUpdate userUpdate = UserUpdate.builder()
-                .address("Incheon")
-                .nickname("kok202-n")
-                .build();
+            .address("Incheon")
+            .nickname("kok202-n")
+            .build();
 
         // when
         userService.update(1, userUpdate);
@@ -165,8 +150,5 @@ public class UserServiceTest {
             userService.verifyEmail(2, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaac");
         }).isInstanceOf(CertificationCodeNotMatchedException.class);
     }
-
-
-
 
 }

@@ -1,4 +1,4 @@
-package com.example.demo.user.controller;
+package com.example.demo.medium.user.controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

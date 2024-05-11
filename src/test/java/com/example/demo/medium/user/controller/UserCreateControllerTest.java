@@ -1,4 +1,4 @@
-package com.example.demo.user.controller;
+package com.example.demo.medium.user.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
