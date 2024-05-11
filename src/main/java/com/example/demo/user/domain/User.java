@@ -67,7 +67,7 @@ public class User {
     }
 
     public User verifyEmail(String certificationCode) {
-        if (!certificationCode.equals(certificationCode)) {
+        if (!this.certificationCode.equals(certificationCode)) {
             throw new CertificationCodeNotMatchedException();
         }
         return User.builder()

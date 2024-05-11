@@ -1,5 +1,6 @@
 package com.example.demo.user.service.domain;
 
+import com.example.demo.common.domain.CertificationCodeNotMatchedException;
 import com.example.demo.mock.TestClockHolder;
 import com.example.demo.mock.TestUuidHolder;
 import com.example.demo.user.domain.User;
@@ -89,10 +90,23 @@ public class UserTest {
         User verifiedUser = targetUser.verifyEmail("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
         Assertions.assertThat(verifiedUser.getStatus()).isEqualTo(UserStatus.ACTIVE);
-
-
     }
+    @Test
+    void FAIL_잘못된_인증코드시_에러코드던진다() {
+        User targetUser = User.builder()
+                .id(1L)
+                .email("kok202@naver.com")
+                .nickname("kok202")
+                .address("Seoul")
+                .status(UserStatus.PENDING)
+                .certificationCode(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa").random())
+                .lastLoginAt(new TestClockHolder(1234).millis())
+                .build();
 
+
+        Assertions.assertThatThrownBy(() -> targetUser.verifyEmail("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaawaab"))
+                .isInstanceOf(CertificationCodeNotMatchedException.class);
+    }
 
 
 
