@@ -65,5 +65,6 @@ public class FakeUserService implements UserService {
     public void verifyEmail(long id, String certificationCode) {
         Optional<User> byId = repository.findById(id);
         User user = byId.get().verifyEmail(certificationCode);
+        repository.save(user);
     }
 }
