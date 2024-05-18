@@ -1,14 +1,18 @@
 package com.example.demo.user.controller;
 
-import com.example.demo.mock.FackUserRepository;
-import com.example.demo.mock.FakeUserService;
+import com.example.demo.common.domain.ResourceNotFoundException;
+import com.example.demo.mock.*;
 import com.example.demo.user.controller.response.UserResponse;
+import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserUpdate;
 import com.example.demo.user.infrastructure.UserEntity;
 import com.example.demo.user.infrastructure.UserJpaRepository;
+import com.example.demo.user.service.CertificationService;
+import com.example.demo.user.service.port.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -28,7 +32,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UserControllerTest {
 
-    private UserController userController = new UserController(new FakeUserService(new FackUserRepository()));
+    private UserRepository userRepository;
+    private UserController userController;
+
+    @BeforeEach
+    void init(){
+     userRepository= new FackUserRepository();
+
+        userRepository.save(User.builder()
+                .id(1L)
+                .email("kok202@naver.com")
+                .nickname("kok202")
+                .address("Seoul")
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .status(UserStatus.ACTIVE)
+                .lastLoginAt(0L)
+                .build());
+        userRepository.save(User.builder()
+                .id(2L)
+                .email("kok303@naver.com")
+                .nickname("kok303")
+                .address("Seoul")
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
+                .status(UserStatus.PENDING)
+                .lastLoginAt(0L)
+                .build());
+
+
+         userController= new UserController(FakeUserService
+                .builder()
+                .certificationService(new CertificationService(new FakeMailSender()))
+                .clockHolder(new TestClockHolder(1L))
+                .uuidHolder(new TestUuidHolder("aaaa"))
+                .repository(userRepository)
+                .build()
+         );
+    }
+
 
     @Test
     void 사용자는_특정_유저의_정보를_개인정보는_소거된채_전달_받을_수_있다() throws Exception {
@@ -50,10 +90,7 @@ public class UserControllerTest {
         // given
         // when
         // then
-        ResponseEntity<UserResponse> response = userController.getUserById(11234);
-        mockMvc.perform(get("/api/users/123456789"))
-            .andExpect(status().isNotFound())
-            .andExpect(content().string("Users에서 ID 123456789를 찾을 수 없습니다."));
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userController.getUserById(11234)).isInstanceOf(ResourceNotFoundException.class);
     }
 
 //    @Test
