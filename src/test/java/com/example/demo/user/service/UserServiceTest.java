@@ -12,20 +12,18 @@ import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserUpdate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.mail.SimpleMailMessage;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
 public class UserServiceTest {
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @BeforeEach
     void init(){
         FackUserRepository fakeUserRepository = new FackUserRepository();
-        userService = UserService.builder()
+        userService = UserServiceImpl.builder()
                 .certificationService(new CertificationService(new FakeMailSender()))
                 .userRepository(fakeUserRepository)
                 .clockHolder(new TestClockHolder(1234))
