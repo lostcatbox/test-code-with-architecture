@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.port.UserService;
 import com.example.demo.exception.CertificationCodeNotMatchedException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.UserStatus;
@@ -8,7 +9,6 @@ import com.example.demo.model.dto.UserUpdateDto;
 import com.example.demo.repository.UserEntity;
 import com.example.demo.repository.UserRepository;
 import java.time.Clock;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;

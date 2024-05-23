@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.port.UserService;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.dto.PostCreateDto;
 import com.example.demo.model.dto.PostUpdateDto;

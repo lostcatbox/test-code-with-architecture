@@ -1,21 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.port.UserService;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.UserStatus;
 import com.example.demo.repository.UserEntity;
-import com.example.demo.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
