@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 })
 public class UserServiceTest {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Test
     void getByEmail_은_ACTIVE인_상태인_유저를_찾아올_수_있다(){
