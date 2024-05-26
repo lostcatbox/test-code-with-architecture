@@ -1,6 +1,8 @@
-package com.example.demo.user.repository;
+package com.example.demo.user.repository.entity;
 
+import com.example.demo.post.service.model.Post;
 import com.example.demo.user.model.UserStatus;
+import com.example.demo.user.service.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,4 +42,25 @@ public class UserEntity {
 
     @Column(name = "last_login_at")
     private Long lastLoginAt;
+
+    public User toModel(){
+        return User.builder()
+                .id(this.id)
+                .email(this.email)
+                .nickname(this.nickname)
+                .address(this.address)
+                .certificationCode(this.certificationCode)
+                .lastLoginAt(this.lastLoginAt)
+                .build();
+    }
+    public static UserEntity from(User user){
+        UserEntity userEntity = new UserEntity();
+        userEntity.id = user.getId();
+        userEntity.email = user.getEmail();
+        userEntity.nickname = user.getNickname();
+        userEntity.address = user.getAddress();
+        userEntity.certificationCode = user.getCertificationCode();
+        userEntity.lastLoginAt = user.getLastLoginAt();
+        return userEntity;
+    }
 }

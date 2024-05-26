@@ -2,8 +2,9 @@ package com.example.demo.post.controller;
 
 import com.example.demo.post.controller.dto.request.PostUpdateDto;
 import com.example.demo.post.controller.dto.response.PostResponse;
-import com.example.demo.post.repository.PostEntity;
-import com.example.demo.post.service.PostService;
+import com.example.demo.post.repository.entity.PostEntity;
+import com.example.demo.post.service.PostServiceImpl;
+import com.example.demo.post.service.model.Post;
 import com.example.demo.user.controller.UserController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
     private final UserController userController;
 
     @GetMapping("/{id}")
@@ -38,13 +39,13 @@ public class PostController {
             .body(toResponse(postService.updatePost(id, postUpdateDto)));
     }
 
-    public PostResponse toResponse(PostEntity postEntity) {
+    public PostResponse toResponse(Post post) {
         PostResponse PostResponse = new PostResponse();
-        PostResponse.setId(postEntity.getId());
-        PostResponse.setContent(postEntity.getContent());
-        PostResponse.setCreatedAt(postEntity.getCreatedAt());
-        PostResponse.setModifiedAt(postEntity.getModifiedAt());
-        PostResponse.setWriter(userController.toResponse(postEntity.getWriter()));
+        PostResponse.setId(post.getId());
+        PostResponse.setContent(post.getContent());
+        PostResponse.setCreatedAt(post.getCreatedAt());
+        PostResponse.setModifiedAt(post.getModifiedAt());
+        PostResponse.setWriter(userController.toResponse(post.getWriter()));
         return PostResponse;
     }
 }

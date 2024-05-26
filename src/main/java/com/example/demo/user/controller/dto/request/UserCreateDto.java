@@ -1,8 +1,12 @@
 package com.example.demo.user.controller.dto.request;
 
+import com.example.demo.user.service.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.Clock;
+import java.util.UUID;
 
 @Getter
 public class UserCreateDto {
@@ -19,5 +23,15 @@ public class UserCreateDto {
         this.email = email;
         this.nickname = nickname;
         this.address = address;
+    }
+
+    public User toUser() {
+        return User.builder()
+                .email(this.getEmail())
+                .nickname(this.getNickname())
+                .address(this.getAddress())
+                .certificationCode(UUID.randomUUID().toString())
+                .lastLoginAt(Clock.systemUTC().millis())
+                .build();
     }
 }

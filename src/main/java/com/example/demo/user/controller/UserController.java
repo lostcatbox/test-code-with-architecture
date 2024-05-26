@@ -3,8 +3,8 @@ package com.example.demo.user.controller;
 import com.example.demo.user.controller.dto.response.MyProfileResponse;
 import com.example.demo.user.controller.dto.response.UserResponse;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
-import com.example.demo.user.repository.UserEntity;
-import com.example.demo.user.service.UserService;
+import com.example.demo.user.service.UserServiceImpl;
+import com.example.demo.user.service.model.User;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,21 +28,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @ResponseStatus
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable long id) {
         return ResponseEntity
             .ok()
-            .body(toResponse(userService.getByIdOrElseThrow(id)));
+            .body(toResponse(userServiceImpl.getByIdOrElseThrow(id)));
     }
 
     @GetMapping("/{id}/verify")
     public ResponseEntity<Void> verifyEmail(
         @PathVariable long id,
         @RequestParam String certificationCode) {
-        userService.verifyEmail(id, certificationCode);
+        userServiceImpl.verifyEmail(id, certificationCode);
         return ResponseEntity.status(HttpStatus.FOUND)
             .location(URI.create("http://localhost:3000"))
             .build();
@@ -53,11 +53,10 @@ public class UserController {
         @Parameter(name = "EMAIL", in = ParameterIn.HEADER)
         @RequestHeader("EMAIL") String email // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
     ) {
-        UserEntity userEntity = userService.getByEmail(email);
-        userService.login(userEntity.getId());
+        User user = userServiceImpl.getByEmail(email);
         return ResponseEntity
             .ok()
-            .body(toMyProfileResponse(userEntity));
+            .body(toMyProfileResponse(user));
     }
 
     @PutMapping("/me")
@@ -67,31 +66,32 @@ public class UserController {
         @RequestHeader("EMAIL") String email, // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
         @RequestBody UserUpdateDto userUpdateDto
     ) {
-        UserEntity userEntity = userService.getByEmail(email);
-        userEntity = userService.updateUser(userEntity.getId(), userUpdateDto);
+        User user = userServiceImpl.getByEmail(email);
+        userServiceImpl.updateUser(user.getId(), userUpdateDto);
+        User response = userServiceImpl.getByEmail(email);
         return ResponseEntity
             .ok()
-            .body(toMyProfileResponse(userEntity));
+            .body(toMyProfileResponse(response));
     }
 
-    public UserResponse toResponse(UserEntity userEntity) {
+    public UserResponse toResponse(User user) {
         UserResponse userResponse = new UserResponse();
-        userResponse.setId(userEntity.getId());
-        userResponse.setEmail(userEntity.getEmail());
-        userResponse.setNickname(userEntity.getNickname());
-        userResponse.setStatus(userEntity.getStatus());
-        userResponse.setLastLoginAt(userEntity.getLastLoginAt());
+        userResponse.setId(user.getId());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setNickname(user.getNickname());
+        userResponse.setStatus(user.getStatus());
+        userResponse.setLastLoginAt(user.getLastLoginAt());
         return userResponse;
     }
 
-    public MyProfileResponse toMyProfileResponse(UserEntity userEntity) {
+    public MyProfileResponse toMyProfileResponse(User user) {
         MyProfileResponse myProfileResponse = new MyProfileResponse();
-        myProfileResponse.setId(userEntity.getId());
-        myProfileResponse.setEmail(userEntity.getEmail());
-        myProfileResponse.setNickname(userEntity.getNickname());
-        myProfileResponse.setStatus(userEntity.getStatus());
-        myProfileResponse.setAddress(userEntity.getAddress());
-        myProfileResponse.setLastLoginAt(userEntity.getLastLoginAt());
+        myProfileResponse.setId(user.getId());
+        myProfileResponse.setEmail(user.getEmail());
+        myProfileResponse.setNickname(user.getNickname());
+        myProfileResponse.setStatus(user.getStatus());
+        myProfileResponse.setAddress(user.getAddress());
+        myProfileResponse.setLastLoginAt(user.getLastLoginAt());
         return myProfileResponse;
     }
 }
