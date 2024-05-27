@@ -3,12 +3,12 @@ package com.example.demo.user.service;
 import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.controller.port.UserService;
-import com.example.demo.user.model.UserStatus;
+import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.repository.UserRepository;
 
 import java.time.Clock;
 
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.repository.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     public User updateUser(long id, UserUpdateDto userUpdateDto){
         User user = userRepository.findById(id);
         user.updateUser(userUpdateDto);
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE);
     }
+    @Transactional
     public void login(long id) {
         User user= userRepository.findById(id);
         user.setLastLoginAt(Clock.systemUTC().millis());
@@ -58,6 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User createUser(UserCreateDto userCreateDto) {
         User user = userCreateDto.toUser();
         userRepository.save(user);

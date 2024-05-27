@@ -1,8 +1,7 @@
 package com.example.demo.user.repository.entity;
 
-import com.example.demo.post.service.model.Post;
-import com.example.demo.user.model.UserStatus;
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.constant.UserStatus;
+import com.example.demo.user.repository.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,6 +1,6 @@
 package com.example.demo.user.repository;
 
-import com.example.demo.user.model.UserStatus;
+import com.example.demo.user.constant.UserStatus;
 import java.util.Optional;
 
 import com.example.demo.user.repository.entity.UserEntity;

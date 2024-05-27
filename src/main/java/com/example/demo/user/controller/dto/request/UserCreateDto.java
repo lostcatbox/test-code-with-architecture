@@ -1,6 +1,6 @@
 package com.example.demo.user.controller.dto.request;
 
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.repository.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;

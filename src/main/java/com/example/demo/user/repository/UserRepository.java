@@ -1,9 +1,7 @@
 package com.example.demo.user.repository;
 
-import com.example.demo.user.model.UserStatus;
-import com.example.demo.user.service.model.User;
-
-import java.util.Optional;
+import com.example.demo.user.constant.UserStatus;
+import com.example.demo.user.repository.model.User;
 
 public interface UserRepository {
 

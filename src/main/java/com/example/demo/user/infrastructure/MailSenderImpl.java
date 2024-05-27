@@ -1,7 +1,6 @@
-package com.example.demo.core.infrastructure;
+package com.example.demo.user.infrastructure;
 
-import com.example.demo.user.repository.entity.UserEntity;
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.repository.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

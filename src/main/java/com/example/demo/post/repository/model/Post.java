@@ -1,10 +1,8 @@
-package com.example.demo.post.service.model;
+package com.example.demo.post.repository.model;
 
 import com.example.demo.post.controller.dto.request.PostCreateDto;
 import com.example.demo.post.controller.dto.request.PostUpdateDto;
-import com.example.demo.user.repository.entity.UserEntity;
-import com.example.demo.user.service.model.User;
-import jakarta.persistence.*;
+import com.example.demo.user.repository.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

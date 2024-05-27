@@ -1,9 +1,9 @@
 package com.example.demo.user.repository;
 
 import com.example.demo.common.exception.ResourceNotFoundException;
-import com.example.demo.user.model.UserStatus;
+import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.repository.entity.UserEntity;
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.repository.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

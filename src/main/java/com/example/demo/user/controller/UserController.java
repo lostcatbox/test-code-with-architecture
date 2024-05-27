@@ -4,7 +4,7 @@ import com.example.demo.user.controller.dto.response.MyProfileResponse;
 import com.example.demo.user.controller.dto.response.UserResponse;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.service.UserServiceImpl;
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.repository.model.User;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +35,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserById(@PathVariable long id) {
         return ResponseEntity
             .ok()
-            .body(toResponse(userServiceImpl.getByIdOrElseThrow(id)));
+            .body(UserResponse.from(userServiceImpl.getByIdOrElseThrow(id)));
     }
 
     @GetMapping("/{id}/verify")
@@ -74,15 +74,7 @@ public class UserController {
             .body(toMyProfileResponse(response));
     }
 
-    public UserResponse toResponse(User user) {
-        UserResponse userResponse = new UserResponse();
-        userResponse.setId(user.getId());
-        userResponse.setEmail(user.getEmail());
-        userResponse.setNickname(user.getNickname());
-        userResponse.setStatus(user.getStatus());
-        userResponse.setLastLoginAt(user.getLastLoginAt());
-        return userResponse;
-    }
+
 
     public MyProfileResponse toMyProfileResponse(User user) {
         MyProfileResponse myProfileResponse = new MyProfileResponse();

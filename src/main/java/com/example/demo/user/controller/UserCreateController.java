@@ -2,9 +2,8 @@ package com.example.demo.user.controller;
 
 import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.response.UserResponse;
-import com.example.demo.user.repository.entity.UserEntity;
 import com.example.demo.user.service.UserServiceImpl;
-import com.example.demo.user.service.model.User;
+import com.example.demo.user.repository.model.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class UserCreateController {
         User user = userServiceImpl.createUser(userCreateDto);
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(userController.toResponse(user));
+            .body(UserResponse.from(user));
     }
 
 }
