@@ -1,6 +1,5 @@
 package com.example.demo.user.repository.model;
 
-import com.example.demo.user.service.port.MailSender;
 import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.exception.CertificationCodeNotMatchedException;
@@ -8,7 +7,6 @@ import com.example.demo.user.constant.UserStatus;
 import com.example.demo.common.service.port.ClockHolder;
 import com.example.demo.common.service.port.UUIDHolder;
 import lombok.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @Builder
 @AllArgsConstructor
@@ -50,9 +48,10 @@ public class User {
         return this;
     }
 
-    public void checkCertificationCode(String certificationCode) {
+    public void verifyCertificationCode(String certificationCode) {
         if (!certificationCode.equals(this.getCertificationCode())) {
             throw new CertificationCodeNotMatchedException();
         }
+        this.setStatus(UserStatus.ACTIVE);
     }
 }

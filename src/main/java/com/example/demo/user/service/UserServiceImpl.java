@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByIdOrElseThrow(long id) {
-
         return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE);
     }
+
     @Transactional
     public void login(long id) {
         User user= userRepository.findById(id);
@@ -58,8 +58,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void verifyEmail(long id, String certificationCode) {
         User user = userRepository.findById(id);
-        user.checkCertificationCode(certificationCode);
-        user.setStatus(UserStatus.ACTIVE);
+        user.verifyCertificationCode(certificationCode);
         userRepository.save(user);
     }
 
