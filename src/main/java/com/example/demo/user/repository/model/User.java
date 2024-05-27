@@ -24,20 +24,15 @@ public class User {
     private UserStatus status;
     private Long lastLoginAt;
 
-    @Transactional
-    public User createUser(UserCreateDto userCreateDto, MailSender mailSender, UUIDHolder uuidHolder) {
-        User user = User.builder()
-                .email(userCreateDto.getEmail())
+    public static User from(UserCreateDto userCreateDto, UUIDHolder uuidHolder) {
+        return User.builder()
                 .nickname(userCreateDto.getNickname())
+                .email(userCreateDto.getEmail())
                 .address(userCreateDto.getAddress())
-                .status(UserStatus.PENDING)
                 .certificationCode(uuidHolder.randomUUID())
-                .build();
-
-        String certificationUrl = mailSender.generateCertificationUrl(user);
-        mailSender.sendCertificationEmail(userCreateDto.getEmail(), certificationUrl);
-        return user;
+                .status(UserStatus.PENDING).build();
     }
+
     public User updateUser(UserUpdateDto userUpdateDto, UUIDHolder uuidHolder) {
         User user = User.builder()
                 .id(this.getId())

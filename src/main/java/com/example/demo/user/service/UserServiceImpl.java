@@ -9,6 +9,7 @@ import com.example.demo.user.repository.UserRepository;
 import com.example.demo.user.repository.model.User;
 import com.example.demo.common.service.port.ClockHolder;
 import com.example.demo.common.service.port.UUIDHolder;
+import com.example.demo.user.service.port.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UUIDHolder uuidHolder;
     private final ClockHolder clockHolder;
+    private final MailSender mailSender;
 
     @Override
     public User getById(long id) {
@@ -64,8 +66,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User createUser(UserCreateDto userCreateDto) {
-        User user = userCreateDto.toUser();
+        User user = User.from(userCreateDto, uuidHolder);
         userRepository.save(user);
+        mailSender.sendCertificationEmail(user.getEmail(), user.getId(),user.getCertificationCode());
         return null;
     }
 }

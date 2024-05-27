@@ -34,8 +34,7 @@ class UserTest {
                 .nickname("lostcatbox")
                 .address("Seoul")
                 .build();
-        User user = new User();
-        User createdUser = user.createUser(userCreateDto, mailSender, uuidHolder);
+        User createdUser = User.from(userCreateDto, uuidHolder);
         Assertions.assertAll(
                 () -> assertNull(createdUser.getId()),
                 () -> assertEquals(createdUser.getEmail(), "lostcatbox@gmail.com"),

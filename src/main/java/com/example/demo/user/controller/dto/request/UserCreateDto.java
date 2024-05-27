@@ -24,14 +24,4 @@ public class UserCreateDto {
         this.nickname = nickname;
         this.address = address;
     }
-
-    public User toUser() {
-        return User.builder()
-                .email(this.getEmail())
-                .nickname(this.getNickname())
-                .address(this.getAddress())
-                .certificationCode(UUID.randomUUID().toString())
-                .lastLoginAt(Clock.systemUTC().millis())
-                .build();
-    }
 }

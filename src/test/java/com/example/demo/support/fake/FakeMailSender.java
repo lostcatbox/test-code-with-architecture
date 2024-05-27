@@ -5,11 +5,12 @@ import com.example.demo.user.repository.model.User;
 
 public class FakeMailSender implements MailSender {
     @Override
-    public void sendCertificationEmail(String email, String certificationUrl) {
+    public void sendCertificationEmail(String email, long userId, String certificationCode) {
+        return;
     }
 
     @Override
-    public String generateCertificationUrl(User user) {
+    public String generateCertificationUrl(long userId, String certificationCode) {
         return "test";
     }
 }
