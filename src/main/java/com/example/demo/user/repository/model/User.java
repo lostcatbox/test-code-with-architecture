@@ -5,10 +5,10 @@ import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.exception.CertificationCodeNotMatchedException;
 import com.example.demo.user.constant.UserStatus;
+import com.example.demo.user.support.ClockHolder;
+import com.example.demo.user.support.UUIDHolder;
 import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -25,33 +25,33 @@ public class User {
     private Long lastLoginAt;
 
     @Transactional
-    public User createUser(UserCreateDto userCreateDto, MailSender mailSender) {
+    public User createUser(UserCreateDto userCreateDto, MailSender mailSender, UUIDHolder uuidHolder) {
         User user = User.builder()
                 .email(userCreateDto.getEmail())
                 .nickname(userCreateDto.getNickname())
                 .address(userCreateDto.getAddress())
                 .status(UserStatus.PENDING)
-                .certificationCode(UUID.randomUUID().toString())
+                .certificationCode(uuidHolder.randomUUID())
                 .build();
 
         String certificationUrl = mailSender.generateCertificationUrl(user);
         mailSender.sendCertificationEmail(userCreateDto.getEmail(), certificationUrl);
         return user;
     }
-    public User updateUser(UserUpdateDto userUpdateDto) {
+    public User updateUser(UserUpdateDto userUpdateDto, UUIDHolder uuidHolder) {
         User user = User.builder()
                 .id(this.getId())
                 .email(this.getEmail())
                 .nickname(userUpdateDto.getNickname())
                 .address(userUpdateDto.getAddress())
                 .status(UserStatus.PENDING)
-                .certificationCode(UUID.randomUUID().toString())
+                .certificationCode(uuidHolder.randomUUID())
                 .build();
         return user;
     }
 
-    public User setLastLoginAt(long millis) {
-        this.lastLoginAt = millis;
+    public User login(ClockHolder clockHolder) {
+        this.lastLoginAt = clockHolder.millis();
         return this;
     }
 

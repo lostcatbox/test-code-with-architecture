@@ -6,9 +6,9 @@ import com.example.demo.user.controller.port.UserService;
 import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.repository.UserRepository;
 
-import java.time.Clock;
-
 import com.example.demo.user.repository.model.User;
+import com.example.demo.user.support.ClockHolder;
+import com.example.demo.user.support.UUIDHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UUIDHolder uuidHolder;
+    private final ClockHolder clockHolder;
 
     @Override
     public User getById(long id) {
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(long id, UserUpdateDto userUpdateDto){
         User user = userRepository.findById(id);
-        user.updateUser(userUpdateDto);
+        user.updateUser(userUpdateDto, uuidHolder);
         userRepository.save(user);
         return userRepository.findById(id);
     }
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void login(long id) {
         User user= userRepository.findById(id);
-        user.setLastLoginAt(Clock.systemUTC().millis());
+        user.login(clockHolder);
         userRepository.save(user);
     }
 
