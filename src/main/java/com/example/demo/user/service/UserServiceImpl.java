@@ -1,14 +1,13 @@
 package com.example.demo.user.service;
 
+import com.example.demo.common.service.port.ClockHolder;
+import com.example.demo.common.service.port.UUIDHolder;
+import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.controller.port.UserService;
-import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.repository.UserRepository;
-
 import com.example.demo.user.repository.model.User;
-import com.example.demo.common.service.port.ClockHolder;
-import com.example.demo.common.service.port.UUIDHolder;
 import com.example.demo.user.service.port.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User updateUser(long id, UserUpdateDto userUpdateDto){
+    public User updateUser(long id, UserUpdateDto userUpdateDto) {
         User user = userRepository.findById(id);
         user.updateUser(userUpdateDto, uuidHolder);
         userRepository.save(user);
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void login(long id) {
-        User user= userRepository.findById(id);
+        User user = userRepository.findById(id);
         user.login(clockHolder);
         userRepository.save(user);
     }
@@ -67,7 +66,6 @@ public class UserServiceImpl implements UserService {
     public User createUser(UserCreateDto userCreateDto) {
         User user = User.from(userCreateDto, uuidHolder);
         userRepository.save(user);
-        mailSender.sendCertificationEmail(user.getEmail(), user.getId(),user.getCertificationCode());
-        return null;
+        return user;
     }
 }
