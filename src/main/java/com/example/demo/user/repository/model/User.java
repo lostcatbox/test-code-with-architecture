@@ -1,6 +1,6 @@
 package com.example.demo.user.repository.model;
 
-import com.example.demo.user.infrastructure.MailSender;
+import com.example.demo.user.service.port.MailSender;
 import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.exception.CertificationCodeNotMatchedException;

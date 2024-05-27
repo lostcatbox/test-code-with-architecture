@@ -1,6 +1,7 @@
 package com.example.demo.user.infrastructure;
 
 import com.example.demo.user.repository.model.User;
+import com.example.demo.user.service.port.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MailSenderImpl implements MailSender{
+public class MailSenderImpl implements MailSender {
     private final JavaMailSender mailSender;
 
     @Override

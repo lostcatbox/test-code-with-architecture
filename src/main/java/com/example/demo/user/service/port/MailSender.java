@@ -1,4 +1,4 @@
-package com.example.demo.user.infrastructure;
+package com.example.demo.user.service.port;
 
 import com.example.demo.user.repository.model.User;
 

@@ -7,7 +7,7 @@ import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.exception.CertificationCodeNotMatchedException;
-import com.example.demo.user.infrastructure.MailSender;
+import com.example.demo.user.service.port.MailSender;
 import com.example.demo.common.service.port.ClockHolder;
 import com.example.demo.common.service.port.UUIDHolder;
 import org.junit.jupiter.api.Assertions;
