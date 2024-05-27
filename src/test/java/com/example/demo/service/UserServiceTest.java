@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.port.UserService;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.UserEntity;
+import com.example.demo.domain.user.service.impl.UserServiceImpl;
+import com.example.demo.common.exception.ResourceNotFoundException;
+import com.example.demo.domain.user.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ public class UserServiceTest {
         String email = "테스트@naver.com";
 
         //when
-        UserEntity result = userService.getByEmail(email);
+        User result = userService.getByEmail(email);
 
         //then
         assertThat(result.getNickname()).isEqualTo("테스트아이디");
@@ -41,14 +41,14 @@ public class UserServiceTest {
 
         //when
         assertThatThrownBy(() -> {
-            UserEntity byEmail = userService.getByEmail(email);
+            User byEmail = userService.getByEmail(email);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
     @Test
     void getById_은_ACTIVE인_상태인_유저를_찾아올_수_있다(){
         int id = 1;
 
-        UserEntity result = userService.getById(id);
+        User result = userService.getById(id);
         assertThat(result.getNickname()).isEqualTo("테스트아이디");
     }
 
@@ -57,7 +57,7 @@ public class UserServiceTest {
         int id = 2;
 
         assertThatThrownBy(() -> {
-            UserEntity result = userService.getById(id);
+            User result = userService.getById(id);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
