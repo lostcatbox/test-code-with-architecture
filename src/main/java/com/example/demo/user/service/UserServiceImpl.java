@@ -7,8 +7,8 @@ import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.repository.UserRepository;
 
 import com.example.demo.user.repository.model.User;
-import com.example.demo.user.support.ClockHolder;
-import com.example.demo.user.support.UUIDHolder;
+import com.example.demo.common.service.port.ClockHolder;
+import com.example.demo.common.service.port.UUIDHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

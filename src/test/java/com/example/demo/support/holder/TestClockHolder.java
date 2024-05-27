@@ -1,6 +1,6 @@
 package com.example.demo.support.holder;
 
-import com.example.demo.user.support.ClockHolder;
+import com.example.demo.common.service.port.ClockHolder;
 
 public class TestClockHolder implements ClockHolder {
     private final long timeLong;

@@ -8,8 +8,8 @@ import com.example.demo.user.controller.dto.request.UserCreateDto;
 import com.example.demo.user.controller.dto.request.UserUpdateDto;
 import com.example.demo.user.exception.CertificationCodeNotMatchedException;
 import com.example.demo.user.infrastructure.MailSender;
-import com.example.demo.user.support.ClockHolder;
-import com.example.demo.user.support.UUIDHolder;
+import com.example.demo.common.service.port.ClockHolder;
+import com.example.demo.common.service.port.UUIDHolder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
