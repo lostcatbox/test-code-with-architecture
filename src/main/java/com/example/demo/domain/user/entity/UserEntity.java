@@ -1,7 +1,6 @@
 package com.example.demo.domain.user.entity;
 
-import com.example.demo.domain.user.dto.req.UserCreateRequestDTO;
-import com.example.demo.domain.user.dto.req.UserUpdateRequestDTO;
+import com.example.demo.domain.user.entity.model.User;
 import com.example.demo.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,15 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Builder
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
 @AllArgsConstructor
 @Getter
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,26 +39,29 @@ public class User {
     @Column(name = "last_login_at")
     private Long lastLoginAt;
 
-    public static User create(UserCreateRequestDTO dto) {
-        return User.builder()
-                .email(dto.email())
-                .nickname(dto.nickName())
-                .address(dto.address())
-                .status(UserStatus.PENDING)
-                .certificationCode(UUID.randomUUID().toString())
+    public static UserEntity from(User user) {
+        return UserEntity.builder()
+                .id(user.id())
+                .email(user.email())
+                .nickname(user.nickName())
+                .address(user.address())
+                .certificationCode(user.certificationCode())
+                .status(user.status())
+                .lastLoginAt(user.lastLoginAt())
                 .build();
     }
 
-    public void update(UserUpdateRequestDTO dto) {
-        this.nickname = dto.nickName();
-        this.address = dto.address();
+    public User to() {
+        return User.builder()
+                .id(this.id)
+                .email(this.email)
+                .nickName(this.nickname)
+                .address(this.address)
+                .certificationCode(this.certificationCode)
+                .status(this.status)
+                .lastLoginAt(this.lastLoginAt)
+                .build();
     }
 
-    public void updateLastLoginAt(Long longAt) {
-        this.lastLoginAt = longAt;
-    }
 
-    public void updateStatus(UserStatus status) {
-        this.status = status;
-    }
 }

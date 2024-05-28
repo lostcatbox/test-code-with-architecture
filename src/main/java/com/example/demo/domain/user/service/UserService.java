@@ -2,7 +2,7 @@ package com.example.demo.domain.user.service;
 
 import com.example.demo.domain.user.dto.req.UserCreateRequestDTO;
 import com.example.demo.domain.user.dto.req.UserUpdateRequestDTO;
-import com.example.demo.domain.user.entity.User;
+import com.example.demo.domain.user.entity.model.User;
 
 public interface UserService {
     User getByEmail(String email);

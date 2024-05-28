@@ -1,13 +1,14 @@
 package com.example.demo.domain.user.controller;
 
-import com.example.demo.domain.user.service.UserService;
+import com.example.demo.domain.user.dto.req.UserUpdateRequestDTO;
 import com.example.demo.domain.user.dto.res.MyProfileResponseDTO;
 import com.example.demo.domain.user.dto.res.UserResponseDTO;
-import com.example.demo.domain.user.dto.req.UserUpdateRequestDTO;
-import com.example.demo.domain.user.entity.User;
+import com.example.demo.domain.user.entity.model.User;
+import com.example.demo.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Builder
 public class UserController {
 
     private final UserService userService;
@@ -47,7 +49,7 @@ public class UserController {
             @RequestHeader("EMAIL") String email // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
     ) {
         User user = userService.getByEmail(email);
-        userService.login(user.getId());
+        userService.login(user.id());
         return ResponseEntity
                 .ok()
                 .body(MyProfileResponseDTO.of(user));
@@ -61,7 +63,7 @@ public class UserController {
             @RequestBody UserUpdateRequestDTO userUpdateRequestDto
     ) {
         User user = userService.getByEmail(email);
-        user = userService.update(user.getId(), userUpdateRequestDto);
+        user = userService.update(user.id(), userUpdateRequestDto);
         return ResponseEntity
                 .ok()
                 .body(MyProfileResponseDTO.of(user));

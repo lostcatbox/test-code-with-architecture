@@ -1,6 +1,6 @@
 package com.example.demo.domain.user.dto.res;
 
-import com.example.demo.domain.user.entity.User;
+import com.example.demo.domain.user.entity.model.User;
 import com.example.demo.domain.user.enums.UserStatus;
 import lombok.Builder;
 
@@ -26,12 +26,12 @@ public record MyProfileResponseDTO(
 
     public static MyProfileResponseDTO of(User user) {
         return MyProfileResponseDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .nickName(user.getNickname())
-                .status(user.getStatus())
-                .address(user.getAddress())
-                .lastLoginAt(user.getLastLoginAt())
+                .id(user.id())
+                .email(user.email())
+                .nickName(user.nickName())
+                .status(user.status())
+                .address(user.address())
+                .lastLoginAt(user.lastLoginAt())
                 .build();
     }
 }
