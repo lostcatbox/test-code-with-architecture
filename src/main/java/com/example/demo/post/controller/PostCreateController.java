@@ -24,6 +24,10 @@ public class PostCreateController {
     public ResponseEntity<PostResponse> createPost(@RequestBody PostCreateDto postCreateDto) {
         return ResponseEntity
             .status(HttpStatus.CREATED)
+<<<<<<< HEAD:src/main/java/com/example/demo/post/controller/PostCreateController.java
             .body(PostResponse.from(postService.createPost(postCreateDto)));
+=======
+            .body(postController.toResponse(postService.create(postCreateDto)));
+>>>>>>> github/main:src/main/java/com/example/demo/controller/PostCreateController.java
     }
 }

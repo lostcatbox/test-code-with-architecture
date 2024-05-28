@@ -1,18 +1,25 @@
 package com.example.demo.user.repository;
 
 import com.example.demo.common.exception.ResourceNotFoundException;
+import com.example.demo.post.repository.PostJPARepository;
+import com.example.demo.post.repository.entity.PostEntity;
 import com.example.demo.user.constant.UserStatus;
 import com.example.demo.user.repository.entity.UserEntity;
 import com.example.demo.user.repository.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
     private final UserJPARepository userJPARepository;
+    private final PostJPARepository postJPARepository;
     @Override
     public User findByIdAndStatus(long id, UserStatus userStatus) {
+        Optional<PostEntity> byId = postJPARepository.findById(1L);
+        byId.get()// send mail같은 코드
         return userJPARepository.findByIdAndStatus(id, userStatus).orElseThrow(() -> new ResourceNotFoundException("에러", id))
                 .toModel();
     }

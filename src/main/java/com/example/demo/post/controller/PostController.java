@@ -33,8 +33,13 @@ public class PostController {
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable long id, @RequestBody PostUpdateDto postUpdateDto) {
         return ResponseEntity
+<<<<<<< HEAD:src/main/java/com/example/demo/post/controller/PostController.java
                 .ok()
                 .body(PostResponse.from(postService.updatePost(id, postUpdateDto)));
+=======
+            .ok()
+            .body(toResponse(postService.update(id, postUpdateDto)));
+>>>>>>> github/main:src/main/java/com/example/demo/controller/PostController.java
     }
 
 
