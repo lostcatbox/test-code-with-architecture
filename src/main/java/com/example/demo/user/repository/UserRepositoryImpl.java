@@ -16,27 +16,28 @@ import java.util.Optional;
 public class UserRepositoryImpl implements UserRepository {
     private final UserJPARepository userJPARepository;
     private final PostJPARepository postJPARepository;
+
     @Override
     public User findByIdAndStatus(long id, UserStatus userStatus) {
         Optional<PostEntity> byId = postJPARepository.findById(1L);
-        byId.get()// send mail같은 코드
+        byId.get();// send mail같은 코드
         return userJPARepository.findByIdAndStatus(id, userStatus).orElseThrow(() -> new ResourceNotFoundException("에러", id))
                 .toModel();
     }
 
     @Override
     public User findByEmailAndStatus(String email, UserStatus userStatus) {
-        return userJPARepository.findByEmailAndStatus(email, userStatus).orElseThrow(()->new ResourceNotFoundException("에러",1))
+        return userJPARepository.findByEmailAndStatus(email, userStatus).orElseThrow(() -> new ResourceNotFoundException("에러", 1))
                 .toModel();
     }
 
     @Override
     public User findById(long id) {
-        return userJPARepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("s", id)).toModel();
+        return userJPARepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("s", id)).toModel();
     }
 
     @Override
-    public void save(User user){
-        userJPARepository.save(UserEntity.from(user));
+    public User save(User user) {
+        return userJPARepository.save(UserEntity.from(user)).toModel();
     }
 }

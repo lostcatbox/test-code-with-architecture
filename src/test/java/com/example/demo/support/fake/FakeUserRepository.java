@@ -31,10 +31,11 @@ public class FakeUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         if (Objects.isNull(user.getId()) || user.getId().equals(0L)) {
             user.setId(Long.valueOf(String.valueOf(idx.getAndAdd(1L))));
         }
         dataList.add(user);
+        return user;
     }
 }

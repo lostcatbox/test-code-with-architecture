@@ -25,12 +25,8 @@ public class UserCreateController {
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody UserCreateDto userCreateDto) {
-<<<<<<< HEAD:src/main/java/com/example/demo/user/controller/UserCreateController.java
         User user = userServiceImpl.createUser(userCreateDto);
         mailSender.sendCertificationEmail(user.getEmail(), user.getId(), user.getCertificationCode());
-=======
-        UserEntity userEntity = userService.create(userCreateDto);
->>>>>>> github/main:src/main/java/com/example/demo/controller/UserCreateController.java
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(UserResponse.from(user));

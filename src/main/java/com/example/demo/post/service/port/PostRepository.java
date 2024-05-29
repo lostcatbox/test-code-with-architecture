@@ -6,5 +6,5 @@ public interface PostRepository {
 
     Post findById(long id);
 
-    void save(Post post);
+    Post save(Post post);
 }
