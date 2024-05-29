@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 public class PostRepositoryImpl implements PostRepository {
 
     private final PostJPARepository postJPARepository;
+
     @Override
     public Post findById(long id) {
-        return postJPARepository.findById(id).orElseThrow(()->new ResourceNotFoundException("",id)).toModel();
+        return postJPARepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("", id)).toModel();
     }
 
     @Override
-    public void save(Post post) {
-        postJPARepository.save(PostEntity.from(post));
+    public Post save(Post post) {
+        return postJPARepository.save(PostEntity.from(post)).toModel();
     }
 }

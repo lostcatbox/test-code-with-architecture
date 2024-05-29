@@ -29,7 +29,7 @@ class UserControllerTest {
         activeUser = User.builder()
                 .email("lostcatbox@gmail.com")
                 .address("Seoul")
-                .certificationCode("bbbb")
+                .certificationCode("cccc")
                 .nickname("lostcatbox")
                 .lastLoginAt(222L)
                 .status(UserStatus.ACTIVE).build();
@@ -54,6 +54,9 @@ class UserControllerTest {
 
     @Test
     void verifyEmail() {
+        ResponseEntity<Void> response = testUserContainer.getUserController().verifyEmail(activeUser.getId(), "cccc");
+        response.getStatusCode().is2xxSuccessful();
+
     }
 
     @Test

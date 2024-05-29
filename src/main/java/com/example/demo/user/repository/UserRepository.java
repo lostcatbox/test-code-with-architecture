@@ -11,5 +11,5 @@ public interface UserRepository {
 
     User findById(long id);
 
-    void save(User user);
+    User save(User user);
 }
